@@ -26,10 +26,17 @@
     <div class="row row-cols-1 row-cols-md-3">
         <div class="col mb-4" *ngFor="let hotel of hotels">
             <div  class="card ">
-                <img class="card-img-top" [src]="hotel.imageUrl" [title]="hotel?.hotelName" [alt]="hotel?.hotelName">
+                <img class="card-img-top"
+                 [src]="hotel.imageUrl" 
+                 [title]="hotel?.hotelName | uppercase" 
+                 [alt]="hotel?.hotelName">
                 <div class="card-body">
                   <h5 [appHighlight]="'yellow'" class="card-title">{{hotel.hotelName}}</h5>
                   <p class="card-text">{{ hotel.description }}</p>
+
+                  <p class="card-text">
+                    {{ hotel.price | currency : 'EUR' : 'symbol' : '1.2-2' : 'fr' }}
+                  </p>
 
                   <div [appBadge]="'yellow'" *ngIf="showBadge">New
                 </div>
