@@ -1,0 +1,8 @@
+.new_badge{
+    background-color: #14a2b8;
+    padding: 3px 6px 3px 6px;
+    width: max-content;
+    color: white;
+    border-radius: 10px;
+    font-size: 12px;
+}
