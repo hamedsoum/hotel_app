@@ -7,6 +7,11 @@ import { HotelListComponent } from './hotel-list/hotel-list.component';
 import { HighlightDirective } from './highlight.directive';
 import { BadgeDirective } from './hotel-list/badge.directive';
 import { FormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+
+import localeFr from "@angular/common/locales/fr"
+
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [

@@ -13,7 +13,7 @@
     <div class="my-2">
       <div class="row">
         <div class="col-md-4">
-          <span>
+          <span class="filter">
             Current Filter : 
           </span>
           <b>{{ hotelFilter }}</b>
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="row row-cols-1 row-cols-md-3">
-        <div class="col mb-4" *ngFor="let hotel of hotels">
+        <div class="col mb-4" *ngFor="let hotel of filteredHotels">
             <div  class="card ">
                 <img class="card-img-top"
                  [src]="hotel.imageUrl" 
