@@ -56,6 +56,8 @@ export class HotelListComponent implements OnInit{
   
           }
         ];
+
+      public receivedRating! : string;
   
         public showBadge! : boolean ;
       ngOnInit(): void {
@@ -102,6 +104,10 @@ export class HotelListComponent implements OnInit{
                   (hotel : IHotel) => hotel.hotelName.toLocaleLowerCase().indexOf(criteria) !== -1
             );
             return res;
+      }
+
+      public receiveRatingClicked(message : string): void{
+            this.receivedRating = message;
       }
      
 }
