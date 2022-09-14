@@ -22,12 +22,20 @@ export class HotelListComponent implements OnInit{
   
       public showBadge! : boolean ;
 
+      public errMsg! : string;
+
       constructor(private hotelService : hotelListService){
 
       }
       ngOnInit(): void {
-            this.hotels = this.hotelService.gethotels();
-            this.filteredHotels = this.hotels;
+
+           this.hotelService.gethotels().subscribe({
+            next : hotels => {
+                  this.hotels = hotels;
+                  this.filteredHotels = this.hotels;
+            },
+            error : err => this.errMsg = err
+           });
             this.hotelFilter = '';
       }
 

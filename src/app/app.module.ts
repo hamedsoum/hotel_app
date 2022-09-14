@@ -8,6 +8,7 @@ import { HighlightDirective } from './highlight.directive';
 import { BadgeDirective } from './hotel-list/badge.directive';
 import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
+import { HttpClientModule} from '@angular/common/http'
 
 import localeFr from "@angular/common/locales/fr"
 import { ReplaceComma } from './_shared/pipes/replace-comma.pipe';
@@ -27,7 +28,8 @@ registerLocaleData(localeFr, 'fr');
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
