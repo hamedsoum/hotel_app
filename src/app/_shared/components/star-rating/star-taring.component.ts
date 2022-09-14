@@ -27,6 +27,6 @@ export class StarRatingComponent implements OnChanges{
     }
 
     public sendRating(): void {
-        this.starRatingClicked.emit(`La note est de ${this.rating}`)
+        this.starRatingClicked.emit(`the rating of this hotel is ${this.rating}`)
     }
 }
