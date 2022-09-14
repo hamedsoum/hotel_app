@@ -11,6 +11,7 @@ import { registerLocaleData } from '@angular/common';
 
 import localeFr from "@angular/common/locales/fr"
 import { ReplaceComma } from './_shared/pipes/replace-comma.pipe';
+import { StarRatingComponent } from './_shared/components/star-rating/star-taring.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -20,7 +21,8 @@ registerLocaleData(localeFr, 'fr');
     HotelListComponent,
     HighlightDirective,
     BadgeDirective,
-    ReplaceComma
+    ReplaceComma,
+    StarRatingComponent
     ],
   imports: [
     BrowserModule,
