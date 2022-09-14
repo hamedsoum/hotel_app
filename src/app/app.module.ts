@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 
 import localeFr from "@angular/common/locales/fr"
+import { ReplaceComma } from './_shared/pipes/replace-comma.pipe';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -18,7 +19,8 @@ registerLocaleData(localeFr, 'fr');
     AppComponent,
     HotelListComponent,
     HighlightDirective,
-    BadgeDirective
+    BadgeDirective,
+    ReplaceComma
     ],
   imports: [
     BrowserModule,

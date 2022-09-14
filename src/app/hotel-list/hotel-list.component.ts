@@ -60,7 +60,7 @@ export class HotelListComponent implements OnInit{
         public showBadge! : boolean ;
       ngOnInit(): void {
             this.filteredHotels = this.hotels;
-            this.hotelFilter = 'mot';
+            this.hotelFilter = '';
       }
 
     /**
