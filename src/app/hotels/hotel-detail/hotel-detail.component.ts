@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { IHotel } from '../hotel';
-import { hotelListService } from '../hotel-list.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IHotel } from '../shared/models/hotel';
+import { hotelListService } from '../shared/services/hotel-list.service';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -14,7 +14,10 @@ export class HotelDetailComponent implements OnInit {
 
   constructor(
               private route : ActivatedRoute,
-              private hotelService : hotelListService
+
+              private hotelService : hotelListService,
+
+              private router : Router
               ) { }
 
   ngOnInit(): void {
@@ -25,6 +28,10 @@ export class HotelDetailComponent implements OnInit {
         console.log('id :', this.hotel);
     }
     )  
+  }
+
+  public backToList() : void {
+    this.router.navigate(['/hotels']);
   }
 
 }
