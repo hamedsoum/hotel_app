@@ -46,6 +46,11 @@
                     [rating]="hotel.rating"
                     (starRatingClicked)="receiveRatingClicked($event)"
                     ></app-star-rating>
+                    <span 
+                    class="material-icons bg-warning text-white p-2 rounded-circle btn"
+                    [routerLink]="['/hotels', hotel.hotelId,'edit']">
+                      edit
+                      </span>
 
                     <span 
                     class="material-icons bg-info text-white p-2 rounded-circle btn"
