@@ -11,6 +11,7 @@ export class HotelEditComponent implements OnInit {
   public hotelForm! : FormGroup;
   constructor(private fb : FormBuilder) { }
 
+  
   ngOnInit(): void {
     this.hotelForm = this.fb.group({
       hotelName : ['', Validators.required],
