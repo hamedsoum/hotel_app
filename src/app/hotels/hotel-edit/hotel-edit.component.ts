@@ -14,6 +14,8 @@ export class HotelEditComponent implements OnInit {
   public hotelForm! : FormGroup;
 
   public hotel! : IHotel;
+
+  public pageTitle! : string ;
   constructor(
     private route : ActivatedRoute,
     private fb : FormBuilder,
@@ -38,17 +40,24 @@ export class HotelEditComponent implements OnInit {
     )
   }
 public getSelectedHotel(id : number):void{
-  this.hotelService.getHotelById(id).subscribe(
+  this.hotelService.getHotelById(id)?.subscribe(
     (hotel : IHotel |undefined) => {
     this.displayHotel(hotel)      
     }
   )
 }
 
+
 public displayHotel(hotel : IHotel | undefined ){
+
  if (hotel) {
   this.hotel = hotel
  }
+ if (this.hotel.hotelId === 0) {
+  this.pageTitle = 'Créer un hotel';
+}else{
+  this.pageTitle = `Modifier l\'hotel ${this.hotel.hotelName}`
+}
   this.hotelForm.patchValue({
     hotelName : this.hotel.hotelName,
     hotelPrice : this.hotel.price,

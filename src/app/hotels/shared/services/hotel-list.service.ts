@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, throwError } from "rxjs";
+import { Observable, of, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 
 import { IHotel } from "../models/hotel";
@@ -23,11 +23,28 @@ export class hotelListService {
         );
     }
 
-    public getHotelById(id : number):Observable<IHotel | undefined>{
+    public getHotelById(id : number):Observable<IHotel | undefined> | undefined{
+      if (id === 0 ) {
+        return of(this.getDefaultHotel())
+      }
       return this.gethotels().pipe(
         map(hotels => hotels.find(hotel => hotel.hotelId === id))
       );
     }
+
+
+public getDefaultHotel() : IHotel{
+  return {
+    hotelId : 0,
+    hotelName : '',
+    description : '',
+    price : 0,
+    rating : 0,
+    imageUrl : '',
+    category : ''
+
+  }
+}
 
     private handleError(error: HttpErrorResponse) {
         if (error.status === 0) {
