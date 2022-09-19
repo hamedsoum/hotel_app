@@ -20,7 +20,7 @@ export class HotelListComponent implements OnInit{
 
       public receivedRating! : string;
   
-      public showBadge! : boolean ;
+      public showBadge : boolean = true ;
 
       public errMsg! : string;
 

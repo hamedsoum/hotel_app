@@ -18,7 +18,7 @@
                     Price
                 </label>
                 <div class="col-md-8">
-                    <input id="hotelPriceId" type="text" class="form-control" formControlName="hotelPrice"
+                    <input id="hotelPriceId" type="text" class="form-control" formControlName="price"
                         placeholder="Price*">
                 </div>
             </div>
@@ -27,11 +27,31 @@
                     Évaluation(1-5)
                 </label>
                 <div class="col-md-8">
-                    <input formControlName="starRatign" type="text" id="evaluationId" class="form-control"
+                    <input formControlName="rating" type="text" id="evaluationId" class="form-control"
                         placeholder="Évaluation*">
                 </div>
             </div>
-
+            <div formArrayName="tags">
+                <div class="form-group row mb-2" *ngFor="let tag of tags.controls; let i = index">
+                    <label [attr.for]="i" class="col-md-2 col-form-label">
+                        {{'étiquette ' + i}}
+                    </label>
+                    <div class="col-md-8">
+                        <input [id]="i" type="text" class="form-control" placeholder=" {{'étiquette ' + i}}"
+                            [formControlName]="i">
+                    </div>
+                    <button (click)="deleteTag(i)" type="button" class="col-md-2  btn btn-outline-danger btn-sm">
+                        del tag
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 mb-2">
+                        <button (click)="addTags()" class="btn btn-outline-primary btn-sm">
+                            add tag
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div class="form-group row mb-2">
                 <label for="descriptionId" class="col-md-2 col-form-label">
                     Description
@@ -49,9 +69,10 @@
                         sauvegarder
                     </button>
                     <button routerLink="/hotels" class="btn btn-outline-secondary mx-3" type="button">
-                         Annuler
+                        Annuler
                     </button>
-                    <button class="btn btn-outline-danger mr-3" type="button">
+                    <button [disabled]="hotel.id === 0" (click)="deleteHotel()" class="btn btn-outline-danger mr-3"
+                        type="button">
                         Supprimer
                     </button>
                 </div>

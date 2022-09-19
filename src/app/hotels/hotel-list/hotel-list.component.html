@@ -48,18 +48,24 @@
                     ></app-star-rating>
                     <span 
                     class="material-icons bg-warning text-white p-2 rounded-circle btn"
-                    [routerLink]="['/hotels', hotel.hotelId,'edit']">
+                    [routerLink]="['/hotels', hotel.id,'edit']">
                       edit
                       </span>
 
                     <span 
                     class="material-icons bg-info text-white p-2 rounded-circle btn"
-                    [routerLink]="['/hotel', hotel.hotelId]">
+                    [routerLink]="['/hotel', hotel.id]">
                       keyboard_arrow_right
                       </span>
                   </div>
-                  <div [appBadge]="'yellow'" *ngIf="showBadge">New
-                </div>
+                  <ng-container *ngFor="let tag of hotel.tags">
+                    <ng-container *ngIf="showBadge">
+                      <span [appBadge]="'yellow'" >
+                        {{tag}}
+                    </span>
+                    </ng-container>
+                   
+                  </ng-container>
                   
                 </div>
               </div>

@@ -28,14 +28,52 @@ export class hotelListService {
         return of(this.getDefaultHotel())
       }
       return this.gethotels().pipe(
-        map(hotels => hotels.find(hotel => hotel.hotelId === id))
+        map(hotels => hotels.find(hotel => hotel.id === id))
       );
     }
+
+    public updateHotel(hotel : IHotel): Observable<IHotel>{
+      const url = `${this.HOTEL_API_URL}/${hotel.id}`;
+      return this.http.put<IHotel>(url, hotel).pipe(
+        catchError(this.handleError)
+      )
+    }
+
+    public deleteHotel(id : number):Observable<{}>{
+      const url = `${this.HOTEL_API_URL}/${id}`;
+      return this.http.delete<{}>(url).pipe(
+        catchError(this.handleError)
+      )
+
+    }
+
+   public createHotel(hotel : IHotel): Observable<IHotel>{
+    
+    hotel = {
+      ... hotel,
+      imageUrl : 'assets/img/indoors.jpg',
+      id : 0
+    }
+     return this.http.post<IHotel>(this.HOTEL_API_URL, hotel).pipe(
+       catchError(this.handleError)
+     )
+   }
+
+    // public getHotelById(id : number):Observable<IHotel | undefined> | undefined{
+    //   const url = `${this.HOTEL_API_URL}/${id}`;
+
+    //   if (id === 0 ) {
+    //     return of(this.getDefaultHotel())
+    //   }
+    //   return this.http.get<IHotel>(url).pipe(
+    //     catchError(this.handleError)
+    //   )
+    // }
 
 
 public getDefaultHotel() : IHotel{
   return {
-    hotelId : 0,
+    id : 0,
     hotelName : '',
     description : '',
     price : 0,
