@@ -28,13 +28,20 @@ export class HotelListComponent implements OnInit{
 
       }
       ngOnInit(): void {
-
+                        
            this.hotelService.gethotels().subscribe({
             next : hotels => {
                   this.hotels = hotels;
+                  console.log(this.hotels);
+                  
                   this.filteredHotels = this.hotels;
+                  console.log(this.hotels);
+                  
             },
-            error : err => this.errMsg = err
+            error : err => {
+                  this.errMsg = err;
+                  console.error(this.errMsg);
+            } 
            });
             this.hotelFilter = '';
       }

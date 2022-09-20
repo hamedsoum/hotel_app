@@ -1,7 +1,17 @@
+<ng-container *ngIf="errorMessage">
+    <div class="alert alert-danger d-flex align-items-center justify-content-between ">
+       <div class="d-flex align-items-center">
+        <span class="material-icons mx-2">error</span>
+        {{ errorMessage }}
+       </div>
+        <span (click)="hideError()" class="material-icons ml-auto pointer">close</span>
+    </div>
+</ng-container>
 <div class="card">
     <div class="card-header text-white bg-info">
         {{ this.pageTitle}}
     </div>
+   
     <div class="card-body">
         <form novalidate (ngSubmit)="saveHotel()" [formGroup]="hotelForm">
             <div class="form-group row mb-2">
@@ -9,8 +19,15 @@
                     Hotel name
                 </label>
                 <div class="col-md-8">
-                    <input id="hotelNameId" type="text" class="form-control" formControlName="hotelName"
-                        placeholder="Nom*">
+                    <input id="hotelNameId"
+                     type="text" class="form-control" formControlName="hotelName"
+                        placeholder="Nom*" 
+                        [ngClass]="{ 'is-invalid': formsErrors['hotelName'] }"
+                        />
+                        <span style="color: red;">
+                            {{ formsErrors["hotelName"] }}
+                        </span>
+                        
                 </div>
             </div>
             <div class="form-group row mb-2">
@@ -18,8 +35,16 @@
                     Price
                 </label>
                 <div class="col-md-8">
-                    <input id="hotelPriceId" type="text" class="form-control" formControlName="price"
-                        placeholder="Price*">
+                    <input id="hotelPriceId"
+                     type="text"
+                      class="form-control"
+                       formControlName="price"
+                        placeholder="Price*"
+                        [ngClass]="{ 'is-invalid': formsErrors['price'] }"
+                        />
+                        <span style="color: red;">
+                            {{ formsErrors["price"] }}
+                        </span>
                 </div>
             </div>
             <div class="form-group row mb-2">
@@ -27,8 +52,16 @@
                     Évaluation(1-5)
                 </label>
                 <div class="col-md-8">
-                    <input formControlName="rating" type="text" id="evaluationId" class="form-control"
-                        placeholder="Évaluation*">
+                    <input formControlName="rating"
+                     type="text" 
+                     id="evaluationId" 
+                     class="form-control"
+                    placeholder="Évaluation*"
+                    [ngClass]="{ 'is-invalid': formsErrors['rating'] }"
+                    >
+                    <span style="color: red;">
+                        {{ formsErrors["rating"] }}
+                    </span>
                 </div>
             </div>
             <div formArrayName="tags">
@@ -71,7 +104,7 @@
                     <button routerLink="/hotels" class="btn btn-outline-secondary mx-3" type="button">
                         Annuler
                     </button>
-                    <button [disabled]="hotel.id === 0" (click)="deleteHotel()" class="btn btn-outline-danger mr-3"
+                    <button [disabled]="hotel?.id === 0" (click)="deleteHotel()" class="btn btn-outline-danger mr-3"
                         type="button">
                         Supprimer
                     </button>

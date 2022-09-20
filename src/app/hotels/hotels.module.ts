@@ -23,7 +23,7 @@ import { HotelData } from './shared/api/hotel.data';
   imports: [
     SharedModule,
     HotelRoutingModule,
-    // InMemoryWebApiModule.forFeature(HotelData)
+    InMemoryWebApiModule.forFeature(HotelData)
   ]
 })
 export class HotelsModule { }

@@ -1,5 +1,4 @@
 import { InMemoryDbService, RequestInfo } from 'angular-in-memory-web-api'
-import { Observable } from 'rxjs'
 import { IHotel } from '../models/hotel'
 
 export class HotelData implements InMemoryDbService {
@@ -53,7 +52,11 @@ export class HotelData implements InMemoryDbService {
             return  { hotels };
     }
 
-    genId(hotels : IHotel[]) : number{
-      return hotels.length > 0 ? Math.max(...hotels.map(hotel => hotel.id)) + 1 : 1;
-    }
+//     genId(hotels : IHotel[]) : number{
+//       return hotels.length > 0 ? Math.max(...hotels.map(hotel => hotel.id)) + 1 : 1;
+//     }
+
+//     genId(hotels: IHotel[]): number | null {
+//       return hotels.length > 0 ? Math.max(...hotels.map(hotel => hotel.id)) + 1 : 1;
+//     }
 }
