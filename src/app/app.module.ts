@@ -10,6 +10,7 @@ import localeFr from "@angular/common/locales/fr"
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { HotelsModule } from './hotels/hotels.module';
+import { AuthentificationModule } from './authentification/authentification.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -24,7 +25,7 @@ registerLocaleData(localeFr, 'fr');
     HttpClientModule,
 
     HotelsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

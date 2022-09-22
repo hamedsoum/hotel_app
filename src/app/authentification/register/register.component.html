@@ -1,0 +1,117 @@
+<div class="card">
+    <div class="card-header text-white bg-info">
+        Registration
+    </div>
+    <div class="card-body">
+        <form novalidate (ngSubmit)="saveData(registerForm)" #registerForm="ngForm">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="lastName">LastName</label>
+                    <input type="text" id="LastName" class="form-control" placeholder="LastName"
+                        [(ngModel)]="user.lastName" name="lastName" required minlength="4" #lastNameVar="ngModel"
+                        [ngClass]="{'is-invalid': lastNameVar.touched && !lastNameVar.valid }">
+                    <div *ngIf="lastNameVar.touched">
+                        <small *ngIf="lastNameVar.errors?.['required']" style="color: red;">
+                            entrez votre nom
+                        </small>
+                        <small *ngIf="lastNameVar.errors?.['minlength']" style="color: red;">
+                            Minimum 4 caractères
+                        </small>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="firstName">FirstName</label>
+                    <input type="text" id="firstName" class="form-control" placeholder="firstName"
+                        [(ngModel)]="user.firstName" name="firstName" #firstNameVar="ngModel" required maxlength="20"
+                        [ngClass]="{'is-invalid': firstNameVar.touched && !firstNameVar.valid }">
+                    <div *ngIf="firstNameVar.touched">
+                        <small *ngIf="firstNameVar.errors?.['required']" style="color: red;">
+                            entrez votre nom
+                        </small>
+                        <small *ngIf="firstNameVar.errors?.['maxlength']" style="color: red;">
+                            Maximun 20 caractères
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="email">email</label>
+                    <input type="email" id="email" class="form-control" placeholder="email" [(ngModel)]="user.email"
+                        #email="ngModel" name="email" required email>
+                    <div *ngIf="email.touched">
+                        <small *ngIf="email.errors?.['required']" style="color: red;">
+                            entrez votre email
+                        </small>
+                        <small *ngIf="email.errors?.['email']" style="color: red;">
+                            entrez un format email
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-row mb-3">
+                <div class="col-md-12">
+                    <div class="form-check mt-4 pt-3">
+                        <label for="sedCatalogueiD" class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="sendCatalogue"
+                                [(ngModel)]="user.sendCatalogue">
+                            Oui je souhaite recevoir la publicité
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="user.sendCatalogue">
+                <div class="form-row mb-3">
+                    <div class="col-md-12 mb-2">
+                        <label for="">Adresse 1</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label for="">Adresse 2</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div action="" class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="">Ville</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="">Departement</label>
+                        <select name="" id="" class="form-control">
+                            <option value="">Selectionne un département</option>
+                            <option value="A">A</option>
+                            <option value="A">B</option>
+                            <option value="A">C</option>
+                            <option value="A">D</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="">Code postal</label>
+                        <input type="number" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end ">
+                <button class="btn btn-info text-white" type="submit" [disabled]="!registerForm.valid">
+                    Register
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr>
+
+<p> Dirty {{ registerForm.dirty }}</p>
+<p> Pristine {{ registerForm.pristine }}</p>
+<p> Valid {{ registerForm.valid }}</p>
+<p> Invalid {{ registerForm.invalid }}</p>
+<pre> Value {{ registerForm.value | json }}</pre>
