@@ -12,17 +12,42 @@
                     class="form-control" 
                     placeholder="LastName"
                     formControlName="lastName"
-                       >                
+                    [ngClass]="{'is-invalid': registerForm.get('lastName')?.touched && !registerForm.get('lastName')?.valid }"
+                       >    
+                       <div *ngIf="registerForm.get('lastName')?.touched">
+                        <small *ngIf="registerForm.get('lastName')?.errors?.['required']" 
+                        style="color: red;">
+                            entrez votre nom
+                        </small>
+                        <small *ngIf="registerForm.get('lastName')?.errors?.['minlength']" 
+                        style="color: red;">
+                            Minimum 4 caractères
+                        </small>
+                    </div>            
                 </div>
 
                 <div class="col-md-6 mb-3">
-                    <label for="firstName">FirstName</label>
+                    <label for="firtName">Prénoms</label>
                     <input type="text" 
-                    id="firstName" 
+                    id="firtName" 
                     class="form-control" 
                     placeholder="firstName"  
-                    formControlName="firtName"  
-                        >     
+                    formControlName="firstName" 
+                    [ngClass]="{'is-invalid': registerForm.get('firstName')?.touched 
+                                && !registerForm.get('firstName')?.valid }" 
+                        >  
+                        <div *ngIf="registerForm.get('firstName')?.touched">
+                            <small 
+                            *ngIf="registerForm.get('firstName')?.errors?.['required']"
+                             style="color: red;">
+                                entrez vos prénoms
+                            </small>
+                            <small 
+                            *ngIf="registerForm.get('firstName')?.errors?.['maxlength']" 
+                            style="color: red;">
+                                max 20 caractères
+                            </small>
+                        </div>     
                 </div>
 
             </div>
@@ -35,9 +60,62 @@
                     class="form-control" 
                     placeholder="email" 
                     name="email"
-                    formControlName="email"> 
+                    formControlName="email"
+                    [ngClass]="{'is-invalid': registerForm.get('email')?.touched && !registerForm.get('email')?.valid }" 
+                    > 
+                    <div *ngIf="registerForm.get('email')?.touched">
+                        <small *ngIf="registerForm.get('email')?.errors?.['required']" style="color: red;">
+                            entrez votre nom
+                        </small>
+                        <small *ngIf="registerForm.get('email')?.errors?.['email']" style="color: red;">
+                            entrez un format email 
+                        </small>
+                    </div> 
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="phoneId">phone</label>
+                    <input type="tel"
+                     class="form-control"
+                    placeholder="Phone number"
+                    formControlName="phone"
+                    [ngClass]="{'is-invalid' : !registerForm.get('phone')?.valid }" 
+                     >
+                     <div class="invalid-feedback">
+                         <span *ngIf="registerForm.get('phone')?.errors?.['required']">
+                            Veuillez entrez votre numero de telephone
+                         </span>
+                     </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="phoneId">Receive Notifications</label>
+                    <div class="col-md-8">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio"
+                                 value="email"
+                                 formControlName="notification" 
+                                 class="form-check-input"
+                                 (click)="setNotificationSetting('email')">
+                                E-mail
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" 
+                                value="text" 
+                                formControlName="notification" 
+                                class="form-check-input"
+                                (click)="setNotificationSetting('text')">
+                                Texte
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-row mb-3">
                 <div class="col-md-12">
                     <div class="form-check mt-4 pt-3">
@@ -46,6 +124,7 @@
                             <input type="checkbox" 
                             class="form-check-input" 
                             name="sendCatalogue"
+                            formControlName="sendCatalogue"
                                 >
                             Oui je souhaite recevoir la publicité
                         </label>
@@ -86,6 +165,11 @@
             </div>
 
             <div class="d-flex justify-content-end ">
+                <button 
+                (click)="fillFormData()"
+                class="btn btn-outline-info mx-2">
+                    Remplir les champs par défaut
+                </button>
                 <button class="btn btn-info text-white" type="submit" [disabled]="!registerForm.valid">
                     Register
                 </button>
