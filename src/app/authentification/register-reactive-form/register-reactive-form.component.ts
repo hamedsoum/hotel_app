@@ -1,6 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 import { User } from '../register/user';
+import { debounceTime } from 'rxjs/operators'
+
+// function ratingRangeValidator(c : AbstractControl): { [key : string] : boolean} | null {
+//   if (c.value !== null && (isNaN(c.value) || c.value < 1 || c.value > 5)) {
+//     return { 'rangeErro' : true}
+//   }
+
+//   return null;
+// }
+
+function ratingRangeValidator(min: number, max: number): ValidatorFn {
+  return (c: AbstractControl): { [key: string]: boolean } | null => {
+    if (c.value !== null && (isNaN(c.value) || c.value < min || c.value > max)) {
+      return { 'rangeErro': true }
+    }
+    return null;
+  }
+}
+
+function emailMatcher(c: AbstractControl): { [key: string]: boolean } | null {
+
+  const emailControl = c.get('email');
+
+  const emailConfirmControl = c.get('confirmEmail');
+
+  if ((emailControl?.pristine || emailConfirmControl?.pristine) || (emailControl?.pristine || emailConfirmControl?.value === '') ) {
+    return null;
+  }
+  if (emailControl?.value === emailConfirmControl?.value) {
+    return null
+  }
+  return { 'match': true };
+}
+
 
 @Component({
   selector: 'app-register-reactive-form',
@@ -9,56 +43,112 @@ import { User } from '../register/user';
 })
 export class RegisterReactiveFormComponent implements OnInit {
 
-  public registerForm! : FormGroup;
+  public registerForm!: FormGroup;
 
+  public user: User = new User();
 
-  public user : User = new User();
+  public errorMessage! : string;
 
-  constructor(private fb : FormBuilder) { }
+  private validationErrorMessage : any = {
+    required : 'entrez votre E-email',
+    email : 'entrez un format email valid'
+  }
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      firstName : ['',[Validators.required, Validators.maxLength(20)]],
+      firstName: ['', [Validators.required, Validators.maxLength(20)]],
       // lastName : {value : 'indisponible', disabled : true},
-      lastName : ['',  [Validators.required, Validators.minLength(4)]],
-      email :[ '', [Validators.required, Validators.email]],
-      phone : '',
-      notification : 'email',
-      sendCatalogue : false
-
+      lastName: ['', [Validators.required, Validators.minLength(4)]],
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
+        confirmEmail: ['', Validators.required],
+      }, { validators: emailMatcher }),
+      phone: '',
+      notification: 'email',
+      rating: [null, ratingRangeValidator(1, 5)],
+      sendCatalog: true,
+      addresses : this.fb.array([this.createAddresseGroup()])
     });
+
     // this.registerForm = new FormGroup({
     //   firstName : new FormControl(null, [Validators.required, Validators.maxLength(20)]),
     //   lastName : new FormControl(null, [Validators.required, Validators.minLength(4)]),
     //   email : new FormControl(null, [Validators.required, Validators.email]),
     //   sendCatalogue : new FormControl(false)
     // })
-  }
 
-  public saveData(){
+    this.registerForm.get('notification')?.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe(
+       value => {
+      this.setNotificationSetting(value)
+    }   
+    );
+
     
+
+    const emailControl = this.registerForm.get('emailGroup.email');
+    emailControl?.valueChanges.pipe(
+      debounceTime(1000)
+    ).subscribe(val => {
+      this.setMessage(emailControl);
+    });
   }
 
-  public fillFormData(){
+  public get addressesList():FormArray {
+    return this.registerForm.get('addresses') as FormArray;
+  }
+  public saveData() {
+
+  }
+
+  public fillFormData() {
     this.registerForm.setValue({
-      firstName : 'John',
-      lastName : 'Doe',
+      firstName: 'John',
+      lastName: 'Doe',
       email: 'jdoe@test.com',
-      sendCatalogue : true
+      sendCatalogue: true
     })
   }
 
-  public setNotificationSetting(method : string): void{
-      const phoneControl = this.registerForm.get('phone');
+  public setNotificationSetting(method: string): void {
+    const phoneControl = this.registerForm.get('phone');
 
 
-      if (method === 'text') {
-        phoneControl?.setValidators(Validators.required);
-      }else{
-        phoneControl?.clearValidators();
-      }
+    if (method === 'text') {
+      phoneControl?.setValidators(Validators.required);
+    } else {
+      phoneControl?.clearValidators();
+    }
 
-      phoneControl?.updateValueAndValidity();
+    phoneControl?.updateValueAndValidity();
+  }
+
+  private setMessage(val : AbstractControl) : void{            
+    this.errorMessage = '';
+    if ((val.touched || val.dirty) && val.errors) {      
+      this.errorMessage = Object.keys(val.errors).map( 
+        key => this.validationErrorMessage[key]
+      ).join(' ');
+    }
+    
+  }
+
+  private createAddresseGroup() : FormGroup {
+    return  this.fb.group({
+      addresstype : ['home'],
+      street1 : [''],
+      street2 : [''],
+      city : [''],
+      state : [''],
+      zip : [''],
+    })
+  }
+
+  public addAddress() : void {
+    this.addressesList.push(this.createAddresseGroup());
   }
 
 }
