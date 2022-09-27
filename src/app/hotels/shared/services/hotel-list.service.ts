@@ -32,7 +32,7 @@ export class hotelListService {
 
     public updateHotel(hotel : IHotel): Observable<IHotel>{
       console.log(hotel);
-      const url = `${this.HOTEL_API_URL}/${hotel.id}2222`;
+      const url = `${this.HOTEL_API_URL}/${hotel.id}`;
       return this.http.put<IHotel>(url, hotel).pipe(
         catchError(this.handleError)
       )

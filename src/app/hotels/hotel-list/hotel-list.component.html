@@ -1,5 +1,6 @@
 <div class="container">
     <h2 *ngIf="hotels && hotels.length > 0">  {{ title }}</h2>
+   <div class="d-flex">
     <button class="btn btn-info text-white d-flex" (click)="toggleIsNewBadge()">
       <span class="material-icons ">
         {{ showBadge ? 'visibility_off' : 'visibility' }}
@@ -9,6 +10,13 @@
         New
       </span>
     </button>
+    <button 
+    class="btn btn-success mx-2"
+    [routerLink]="['/hotels', '0', 'edit']"
+    >
+      add hotel
+    </button>
+   </div>
     <hr>
     <div class="my-2">
       <div class="row">

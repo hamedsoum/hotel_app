@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
-import { User } from '../register/user';
+// import { User } from '../register/user';
 import { debounceTime } from 'rxjs/operators'
 
 // function ratingRangeValidator(c : AbstractControl): { [key : string] : boolean} | null {
@@ -61,7 +61,7 @@ export class RegisterReactiveFormComponent implements OnInit {
 
   public registerForm!: FormGroup;
 
-  public user: User = new User();
+  // public user: User = new User();
 
   public errorMessage!: string;
 
