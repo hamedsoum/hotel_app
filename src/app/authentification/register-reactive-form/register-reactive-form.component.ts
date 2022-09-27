@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, FormArray } from '@angular/forms';
 import { User } from '../register/user';
 import { debounceTime } from 'rxjs/operators'
 
@@ -26,13 +26,29 @@ function emailMatcher(c: AbstractControl): { [key: string]: boolean } | null {
 
   const emailConfirmControl = c.get('confirmEmail');
 
-  if ((emailControl?.pristine || emailConfirmControl?.pristine) || (emailControl?.pristine || emailConfirmControl?.value === '') ) {
+  if ((emailControl?.pristine || emailConfirmControl?.pristine) || (emailControl?.pristine || emailConfirmControl?.value === '')) {
     return null;
   }
   if (emailControl?.value === emailConfirmControl?.value) {
     return null
   }
   return { 'match': true };
+}
+
+function passwordMatcherError(c: AbstractControl): { [key: string]: boolean } | null {
+
+  const passwordControl = c.get('password');
+  const confirmPasswordControl = c.get('confirmPassword');  
+  console.log(confirmPasswordControl);
+
+  
+  if ((passwordControl?.pristine || confirmPasswordControl?.pristine) || (passwordControl?.pristine || confirmPasswordControl?.value === '')) {
+    return null;
+  }
+  if (passwordControl?.value === confirmPasswordControl?.value) {
+    return null
+  }
+  return { 'passwordMatch': true };
 }
 
 
@@ -47,11 +63,11 @@ export class RegisterReactiveFormComponent implements OnInit {
 
   public user: User = new User();
 
-  public errorMessage! : string;
+  public errorMessage!: string;
 
-  private validationErrorMessage : any = {
-    required : 'entrez votre E-email',
-    email : 'entrez un format email valid'
+  private validationErrorMessage: any = {
+    required: 'entrez votre E-email',
+    email: 'entrez un format email valid'
   }
 
   constructor(private fb: FormBuilder) { }
@@ -65,29 +81,26 @@ export class RegisterReactiveFormComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         confirmEmail: ['', Validators.required],
       }, { validators: emailMatcher }),
+      passwordGroup: this.fb.group({
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required]
+      }, { validators: passwordMatcherError }),
       phone: '',
       notification: 'email',
       rating: [null, ratingRangeValidator(1, 5)],
       sendCatalog: true,
-      addresses : this.fb.array([this.createAddresseGroup()])
+      addresses: this.fb.array([this.createAddresseGroup()])
     });
-
-    // this.registerForm = new FormGroup({
-    //   firstName : new FormControl(null, [Validators.required, Validators.maxLength(20)]),
-    //   lastName : new FormControl(null, [Validators.required, Validators.minLength(4)]),
-    //   email : new FormControl(null, [Validators.required, Validators.email]),
-    //   sendCatalogue : new FormControl(false)
-    // })
 
     this.registerForm.get('notification')?.valueChanges.pipe(
       debounceTime(1000)
     ).subscribe(
-       value => {
-      this.setNotificationSetting(value)
-    }   
+      value => {
+        this.setNotificationSetting(value)
+      }
     );
 
-    
+
 
     const emailControl = this.registerForm.get('emailGroup.email');
     emailControl?.valueChanges.pipe(
@@ -97,7 +110,7 @@ export class RegisterReactiveFormComponent implements OnInit {
     });
   }
 
-  public get addressesList():FormArray {
+  public get addressesList(): FormArray {
     return this.registerForm.get('addresses') as FormArray;
   }
   public saveData() {
@@ -126,28 +139,28 @@ export class RegisterReactiveFormComponent implements OnInit {
     phoneControl?.updateValueAndValidity();
   }
 
-  private setMessage(val : AbstractControl) : void{            
+  private setMessage(val: AbstractControl): void {
     this.errorMessage = '';
-    if ((val.touched || val.dirty) && val.errors) {      
-      this.errorMessage = Object.keys(val.errors).map( 
+    if ((val.touched || val.dirty) && val.errors) {
+      this.errorMessage = Object.keys(val.errors).map(
         key => this.validationErrorMessage[key]
       ).join(' ');
     }
-    
+
   }
 
-  private createAddresseGroup() : FormGroup {
-    return  this.fb.group({
-      addresstype : ['home'],
-      street1 : [''],
-      street2 : [''],
-      city : [''],
-      state : [''],
-      zip : [''],
+  private createAddresseGroup(): FormGroup {
+    return this.fb.group({
+      addresstype: ['home'],
+      street1: [''],
+      street2: [''],
+      city: [''],
+      state: [''],
+      zip: [''],
     })
   }
 
-  public addAddress() : void {
+  public addAddress(): void {
     this.addressesList.push(this.createAddresseGroup());
   }
 
