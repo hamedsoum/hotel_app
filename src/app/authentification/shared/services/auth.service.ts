@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
 import { IUser } from '../models/user';
 
@@ -9,7 +10,9 @@ import { IUser } from '../models/user';
 export class AuthService {
 
   private readonly USER_API_URL = 'api/user'
-  constructor(private http: HttpClient) { }
+
+  private enableToConnect : boolean = false ;
+  constructor(private http: HttpClient, private router : Router) { }
 
 
   getUsers(): Observable<IUser[]> {
@@ -55,4 +58,17 @@ export class AuthService {
     // Return an observable with a user-facing error message.
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
+
+ getEnableToConnecte(){
+   return this.enableToConnect;
+ }
+
+ setEnableToConnecte(enableToConnect : boolean){
+   this.enableToConnect = enableToConnect;
+}
+
+ login(enableToConnect : boolean): void{
+  this.setEnableToConnecte(enableToConnect);
+  this.router.navigateByUrl("hotels")
+ }
 }

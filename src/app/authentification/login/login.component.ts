@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,9 @@ export class LoginComponent implements OnInit {
     pattern: 'le mot de passe doit contenir au moin 8 caractère, une lettre majuscule, une lettre minuscule'
   }
   public errorMessage!: string;
-  constructor(private fb : FormBuilder) { }
+  enabledToAccess!: boolean;
+  constructor(private fb : FormBuilder,
+              private authService : AuthService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -33,9 +36,11 @@ export class LoginComponent implements OnInit {
   }
 
 
-  save(){
-    console.log(this.loginForm.value);
-    
+  login(){
+    if (this.loginForm.valid) {
+      this.enabledToAccess == true; 
+      this.authService.login(this.enabledToAccess); 
+    }    
   }
 
 

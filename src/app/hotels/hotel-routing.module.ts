@@ -6,6 +6,7 @@ import { HotelDetailGuard } from './shared/guards/hotel-detail.guard';
 import { HotelListComponent } from './hotel-list/hotel-list.component';
 import { HotelEditComponent } from './hotel-edit/hotel-edit.component';
 import { HotelEditGuard } from './shared/guards/hotel-edit.guard';
+import { HotleListGuard } from './shared/guards/hotle-list.guard';
 
 
 
@@ -16,10 +17,14 @@ import { HotelEditGuard } from './shared/guards/hotel-edit.guard';
       {path : 'hotel/:id', component : HotelDetailComponent,
       canActivate: [HotelDetailGuard]
     },
-      {path : 'hotels', component : HotelListComponent},
+      {path : 'hotels', 
+      component : HotelListComponent, 
+      canActivate : [HotleListGuard]
+    },
       {path : 'hotels/:id/edit', 
       component : HotelEditComponent,
-      canDeactivate : [HotelEditGuard]
+      canDeactivate : [HotelEditGuard],
+      canActivate : [HotleListGuard]
     },
 
     ]),
