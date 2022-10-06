@@ -6,6 +6,7 @@ import { UserListComponent } from './user-list/user-list.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 
 
+
 @NgModule({
   declarations: [
     UserListComponent,
@@ -13,7 +14,7 @@ import { UserEditComponent } from './user-edit/user-edit.component';
   ],
   imports: [
     CommonModule,
-    UserRoutingModule
+    UserRoutingModule,
   ]
 })
 export class UserModule { }

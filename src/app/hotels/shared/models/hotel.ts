@@ -1,11 +1,11 @@
 export interface IHotel {
-   id : number  ;
-   hotelName : string;
-   description : string;
-   price : number;
-   imageUrl : string;
-   rating : number;
-   category : string;
+   id : number | null  ;
+   hotelName : string | null;
+   description : string | null;
+   price : number | null;
+   imageUrl : string | null;
+   rating : number | null;
+   category : string | null;
    tags?: string []
 }
 

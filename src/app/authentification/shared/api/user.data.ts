@@ -1,9 +1,9 @@
 import { InMemoryDbService, RequestInfo } from 'angular-in-memory-web-api'
 import { IUser } from '../models/user';
 
-export class HotelData implements InMemoryDbService {
+export class UserData implements InMemoryDbService {
     createDb(reqInfo?: RequestInfo): Record<string , IUser[]> {
-            const hotels : IUser[] = [
+            const users : IUser[] = [
                 {
                   id : 0,
                   firstName : "daouda",
@@ -45,7 +45,7 @@ export class HotelData implements InMemoryDbService {
               
             ];
 
-            return  { hotels };
+            return  { users };
     }
 
 //     genId(hotels : IHotel[]) : number{

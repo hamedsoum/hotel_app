@@ -6,6 +6,8 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterReactiveFormComponent } from './register-reactive-form/register-reactive-form.component';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { UserData } from './shared/api/user.data';
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import { RegisterReactiveFormComponent } from './register-reactive-form/register
     CommonModule,
     AuthentificationRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InMemoryWebApiModule.forFeature(UserData)
   ]
 })
 export class AuthentificationModule { }

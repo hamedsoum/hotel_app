@@ -12,7 +12,6 @@ export class hotelListService {
 
     private readonly HOTEL_API_URL  = 'api/hotels';
     constructor(private http : HttpClient){
-        
     }
 
     public gethotels(): Observable<IHotel[]>{

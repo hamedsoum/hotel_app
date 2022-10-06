@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { IHotel } from '../shared/models/hotel';
 import { hotelListService } from '../shared/services/hotel-list.service';
 
@@ -10,7 +12,9 @@ import { hotelListService } from '../shared/services/hotel-list.service';
 })
 export class HotelDetailComponent implements OnInit {
 
-  public hotel : IHotel | undefined = <IHotel>{};
+  // public hotel : IHotel | undefined = <IHotel>{};
+
+  public hotel$ : Observable<IHotel | undefined> = of(<IHotel >{});
 
   constructor(
               private route : ActivatedRoute,
@@ -23,12 +27,22 @@ export class HotelDetailComponent implements OnInit {
   ngOnInit(): void {
     const id : number | null  = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.hotelService.gethotels().subscribe((hotels : IHotel[]) =>{      
-        this.hotel = hotels.find(hotel => hotel.id === id)
-        console.log('id :', this.hotel);
-    }
-    )  
+   
+    this.hotel$ = this.hotelService.gethotels()
+    .pipe(
+      map((hotels : IHotel[]) => hotels.find(hotel => hotel.id === id)),
+      tap((item : IHotel | undefined) => console.log)
+    )
+
+
+    // .subscribe((hotel : IHotel | undefined) => {      
+    //     this.hotel = hotel;
+    //     console.log('id :', this.hotel);
+    // }
+    // ) 
+   
   }
+
 
   public backToList() : void {
     this.router.navigate(['/hotels']);

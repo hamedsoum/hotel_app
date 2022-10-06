@@ -9,7 +9,7 @@ import { IUser } from '../models/user';
 })
 export class AuthService {
 
-  private readonly USER_API_URL = 'api/user'
+  private readonly USER_API_URL = 'api/users'
 
   private enableToConnect : boolean = false ;
   constructor(private http: HttpClient, private router : Router) { }
