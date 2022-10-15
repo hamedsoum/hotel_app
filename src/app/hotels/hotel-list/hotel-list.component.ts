@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { map, Observable, of, catchError, throwError, EMPTY } from "rxjs";
+import { map, Observable, of, catchError, EMPTY, combineLatest, forkJoin, withLatestFrom,Subject, BehaviorSubject  } from "rxjs";
 import { IHotel} from "../shared/models/hotel"
 import { hotelListService } from "../shared/services/hotel-list.service";
 @Component({
@@ -16,6 +16,7 @@ export class HotelListComponent implements OnInit{
       public filteredHotels: IHotel[] = [];
 
       public filteredHotels$ : Observable<IHotel[]> = of([]);
+      public filterSubject : Subject<string> = new BehaviorSubject<string>(' ');
 
 
       public title = 'Liste hotel';
@@ -35,7 +36,31 @@ export class HotelListComponent implements OnInit{
 
       }
       ngOnInit(): void {
-            this.hotels$ = this.hotelService.gethotels().pipe(
+
+            const subject = new Subject<number>();
+
+            subject.subscribe( {
+                        next : (value) => console.log('A ', value) 
+                    }        
+            )
+
+            subject.subscribe({
+                  next : (value) => console.log('B ', value)     
+            }
+            )
+
+            // const a$ = of(1,2,3)
+            // const b$ = of(11,12,13)
+            // const c$ = of(21,22,23)
+
+            // combineLatest([a$, b$, c$]).subscribe((val) => console.log('combineLatest', val))
+            // forkJoin([a$, b$, c$]).subscribe((val) => console.log('forkJoin', val))
+
+            // a$.pipe(
+            //       withLatestFrom(b$, c$))
+            //       .subscribe((val) => console.log('with latest from', val)
+            // )
+            this.hotels$ = this.hotelService.hotelsWithCategories$.pipe(
                   catchError((err) => {
                         this.errMsg = err;
 
@@ -43,7 +68,10 @@ export class HotelListComponent implements OnInit{
                   })
             );
             
-            this.filteredHotels$ = this.hotels$;            
+            // this.filteredHotels$ = this.hotels$; 
+            this.filteredHotels$ = this.createFilterHotels(this.filterSubject, this.hotels$);            
+           
+            this.hotelFilter = '';
            this.hotelService.gethotels().subscribe({
             next : hotels => {
                   this.hotels = hotels;
@@ -58,8 +86,14 @@ export class HotelListComponent implements OnInit{
                   console.error(this.errMsg);
             } 
            });
-            this.hotelFilter = '';
+
+
       }
+
+      public filterChange(value : string) : void  {
+            console.log('value', value);
+            this.filterSubject.next(value);
+    }
 
     /**
      * The function is called toggleIsNewBadge(). It toggles the value of the showBadge variable
@@ -91,16 +125,28 @@ export class HotelListComponent implements OnInit{
       public set hotelFilter(filter : string){
             this._hotelFilter = filter;
 
-            if (this.hotelFilter) {
-                this.filteredHotels$ = this.hotels$.pipe(
-                      map((hotels : IHotel[]) => this.filterHotels(filter, hotels ))
-                )  
-            }else{
-                  this.filteredHotels$ = this.hotels$;
-            }
+            // if (this.hotelFilter) {
+            //     this.filteredHotels$ = this.hotels$.pipe(
+            //           map((hotels : IHotel[]) => this.filterHotels(filter, hotels ))
+            //     )  
+            // }else{
+            //       this.filteredHotels$ = this.hotels$;
+            // }
 
             // this.filteredHotels = this.hotelFilter ? this.filterHotels(this.hotelFilter) : this.hotels;
       }
+
+      public createFilterHotels(filter$ : Observable<string>, hotels$ : Observable<IHotel[]>): Observable<IHotel[]>{
+            return combineLatest(hotels$, filter$, (hotels : IHotel[], filter : string) =>{
+                  if (filter === '') return hotels;
+
+                  return hotels.filter(
+                        (hotel : IHotel) => hotel.hotelName?.toLocaleLowerCase().indexOf(filter) !== -1
+                   );
+            });
+      }
+
+
 
     /**
      * It takes a string as an argument and returns an array of hotels whose name contains the string
@@ -128,5 +174,6 @@ export class HotelListComponent implements OnInit{
       public receiveRatingClicked(message : string): void{
             this.receivedRating = message;
       }
+
      
 }

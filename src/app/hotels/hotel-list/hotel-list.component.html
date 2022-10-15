@@ -30,7 +30,7 @@
           <b>{{ hotelFilter }}</b>
         </div>
         <div class="col-md-8 form-group">
-            <input type="text" class="form-control" [(ngModel)]="hotelFilter" >
+            <input type="text" class="form-control" [(ngModel)]="hotelFilter" (ngModelChange)="filterChange($event)" >
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
                  [title]="hotel?.hotelName | uppercase" 
                  [alt]="hotel?.hotelName">
                 <div class="card-body">
-                  <h5 [appHighlight]="'yellow'" class="card-title">{{hotel.hotelName}}</h5>
+                  <h5 [appHighlight]="'yellow'" class="card-title">{{hotel.hotelName}} - {{hotel.category}}</h5>
                   <p class="card-text">{{ hotel.description }}</p>
 
                   <p class="card-text">
