@@ -22,7 +22,7 @@ export class HotelEditComponent implements OnInit, AfterViewInit {
 
   public pageTitle! : string ;
 
-  public errorMessage! : string;
+  public errorMessage! : string | null;
 
   public formsErrors : {[key : string] : string} = {};
 

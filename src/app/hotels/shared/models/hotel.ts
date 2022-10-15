@@ -5,7 +5,8 @@ export interface IHotel {
    price : number | null;
    imageUrl : string | null;
    rating : number | null;
-   category : string | null;
+   categoryId? : number | null;
+   category ? : string | null;
    tags?: string []
 }
 
@@ -18,7 +19,8 @@ export class Hotel implements IHotel{
       public price : number,
       public imageUrl : string,
       public rating : number,
-      public category : string,
+      public categoryId : number,
+      public category  : string,
       public tags : string []
    ){ }
 

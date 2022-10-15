@@ -15,16 +15,16 @@ import { HotleListGuard } from './shared/guards/hotle-list.guard';
   imports: [
     RouterModule.forChild([
       {path : 'hotel/:id', component : HotelDetailComponent,
-      canActivate: [HotelDetailGuard]
+      // canActivate: [HotelDetailGuard]
     },
       {path : 'hotels', 
-      component : HotelListComponent, 
-      canActivate : [HotleListGuard]
+      component : HotelListComponent
+      // canActivate : [HotleListGuard]
     },
       {path : 'hotels/:id/edit', 
       component : HotelEditComponent,
       canDeactivate : [HotelEditGuard],
-      canActivate : [HotleListGuard]
+      // canActivate : [HotleListGuard]
     },
 
     ]),

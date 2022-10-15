@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { map, Observable, of, catchError, throwError, EMPTY } from "rxjs";
 import { IHotel} from "../shared/models/hotel"
 import { hotelListService } from "../shared/services/hotel-list.service";
 @Component({
@@ -14,9 +15,15 @@ export class HotelListComponent implements OnInit{
 
       public filteredHotels: IHotel[] = [];
 
+      public filteredHotels$ : Observable<IHotel[]> = of([]);
+
+
       public title = 'Liste hotel';
 
       public hotels : IHotel [] = [];
+
+      public hotels$ : Observable<IHotel[]> = of([]);
+
 
       public receivedRating! : string;
   
@@ -28,7 +35,15 @@ export class HotelListComponent implements OnInit{
 
       }
       ngOnInit(): void {
-                        
+            this.hotels$ = this.hotelService.gethotels().pipe(
+                  catchError((err) => {
+                        this.errMsg = err;
+
+                        return EMPTY;
+                  })
+            );
+            
+            this.filteredHotels$ = this.hotels$;            
            this.hotelService.gethotels().subscribe({
             next : hotels => {
                   this.hotels = hotels;
@@ -67,10 +82,24 @@ export class HotelListComponent implements OnInit{
    * _hotelFilter to the value of the argument
    * @param {string} filter - The filter string that the user has entered.
    */
+      // public set hotelFilter(filter : string){
+      //       this._hotelFilter = filter;
+
+      //       this.filteredHotels = this.hotelFilter ? this.filterHotels(this.hotelFilter) : this.hotels;
+      // }
+
       public set hotelFilter(filter : string){
             this._hotelFilter = filter;
 
-            this.filteredHotels = this.hotelFilter ? this.filterHotels(this.hotelFilter) : this.hotels;
+            if (this.hotelFilter) {
+                this.filteredHotels$ = this.hotels$.pipe(
+                      map((hotels : IHotel[]) => this.filterHotels(filter, hotels ))
+                )  
+            }else{
+                  this.filteredHotels$ = this.hotels$;
+            }
+
+            // this.filteredHotels = this.hotelFilter ? this.filterHotels(this.hotelFilter) : this.hotels;
       }
 
     /**
@@ -78,11 +107,20 @@ export class HotelListComponent implements OnInit{
      * @param {string} criteria - The search criteria entered by the user.
      * @returns An array of hotels that match the criteria.
      */
-      private filterHotels(criteria : string): IHotel[]{
+      // private filterHotels(criteria : string): IHotel[]{
+      //       criteria = criteria.toLocaleLowerCase();
+
+      //       const res = this.hotels.filter(
+      //             (hotel : IHotel) => hotel.hotelName?.toLocaleLowerCase().indexOf(criteria) !== -1
+      //       );
+      //       return res;
+      // }
+
+      private filterHotels(criteria : string, hotels : IHotel[]): IHotel[]{
             criteria = criteria.toLocaleLowerCase();
 
-            const res = this.hotels.filter(
-                  (hotel : IHotel) => hotel.hotelName.toLocaleLowerCase().indexOf(criteria) !== -1
+            const res = hotels.filter(
+                  (hotel : IHotel) => hotel.hotelName?.toLocaleLowerCase().indexOf(criteria) !== -1
             );
             return res;
       }

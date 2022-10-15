@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
+import { Category } from "../models/category";
 
 import { IHotel } from "../models/hotel";
 
@@ -15,7 +16,13 @@ export class hotelListService {
     }
 
     public gethotels(): Observable<IHotel[]>{
-        return this.http.get<IHotel[]>(this.HOTEL_API_URL).pipe(
+        return this.http.get<any>(this.HOTEL_API_URL).pipe(
+          map((hotels : IHotel[]) => hotels.map(hotel  => ({
+              ... hotel,
+              price : hotel.price ? hotel.price * 1.5 : null
+          }) as IHotel)
+          ),
+          tap(hotels => console.log('hotel', hotels)),
             catchError(this.handleError)
             )
     }
@@ -25,7 +32,7 @@ export class hotelListService {
         return of(this.getDefaultHotel())
       }
       return this.gethotels().pipe(
-        map(hotels => hotels.find(hotel => hotel.id === id))
+        map(hotels => hotels.find((hotel : any) => hotel.id === id))
       );
     }
 
@@ -77,9 +84,23 @@ public getDefaultHotel() : IHotel{
     price : null,
     rating : null,
     imageUrl : null,
+    categoryId : null,
     category : null
 
   }
+}
+
+public getCategories (): Observable<Category[]>{
+  return of([
+    {
+    id : 0,
+    name : 'Motel',
+    },
+    {
+    id : 0,
+    name : 'Auberge',
+    }
+  ])
 }
 
     private handleError(error: HttpErrorResponse) {

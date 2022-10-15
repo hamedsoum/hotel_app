@@ -11,7 +11,7 @@ export class HotelData implements InMemoryDbService {
                     price: 230.5,
                     imageUrl: "assets/img/hotel-room.jpg",
                     rating: 3.5,
-                    category : "nouveau",
+                    categoryId: 0,
                     tags : ["nouveau"]
               },
               {
@@ -21,7 +21,7 @@ export class HotelData implements InMemoryDbService {
                     price: 145.5,
                     imageUrl: "assets/img/the-interior.jpg",
                     rating: 5,
-                    category : "nouveau",
+                    categoryId: 1,
                     tags : ["nouveau"]
           
               },
@@ -32,7 +32,7 @@ export class HotelData implements InMemoryDbService {
                     price: 120.12,
                     imageUrl: "assets/img/indoors.jpg",
                     rating: 4,
-                    category : "nouveau",
+                    categoryId: 1,
                     tags : ["nouveau"]
           
               },
@@ -43,7 +43,7 @@ export class HotelData implements InMemoryDbService {
                     price: 135.12,
                     imageUrl: "assets/img/window.jpg",
                     rating: 2.5,
-                    category : "nouveau",
+                    categoryId: 0,
                     tags : ["nouveau"]
           
               }
